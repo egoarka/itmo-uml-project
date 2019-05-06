@@ -65,8 +65,8 @@ const themes = {
 
 const HR = () => <Box width="100%" height="1px" background="#e6e6e6" />;
 
-const User = () => (
-  <Box width="304px" round="8px" background="white" pad="25px">
+const Customer = () => (
+  <Box width="354px" round="8px" background="white" pad="25px">
     <Box
       direction="row"
       flex={true}
@@ -78,9 +78,9 @@ const User = () => (
       <Box round="full" height="70px" width="70px" background="#e6e6e6" />
       <Box pad={{ left: "15px" }}>
         <Text weight="bold" color="#030f09">
-          Your full name
+          Customer name
         </Text>
-        <Text>customer</Text>
+        <Text>some info</Text>
       </Box>
     </Box>
     <HR />
@@ -90,7 +90,7 @@ const User = () => (
       }}
       direction="row"
     >
-      <Box>
+      <Box height="large">
         <Text weight="bold" color="#030f09">
           20
         </Text>
@@ -116,7 +116,34 @@ const Header = () => (
   </Box>
 );
 
-const Advert = () => (
+const Responce = () => (
+  <Box pad={{ top: "small", bottom: "small" }}>
+    <Anchor>
+      <Box direction="row">
+        <Box round="full" height="35px" width="35px" background="#e6e6e6" />
+        <Text
+          weight="bold"
+          color="#030f09"
+          alignSelf="center"
+          margin={{ left: "xsmall" }}
+        >
+          User name
+        </Text>
+      </Box>
+    </Anchor>
+
+    <Text color="#030f09" margin={{ left: "small", top: "small" }}>
+      Та изи ща сделаю Та изи ща сделаю Та изи ща сделаю
+      <br /> Та изи ща сделаю Та изи ща сделаю Та изи ща сделаю <br />
+      Та изи ща сделаю Та изи ща сделаю Та изи ща сделаю
+    </Text>
+    <Text color="status-unknown" size="15px">
+      06 мая 2019, 21:47
+    </Text>
+  </Box>
+);
+
+const AdvertFullDescription = () => (
   <Box
     pad={"medium"}
     background="white"
@@ -125,34 +152,46 @@ const Advert = () => (
     }}
     round="16px"
   >
-    <Box direction="row">
-      <Box
-        round="full"
-        height="32px"
-        width="32px"
-        background="#e6e6e6"
-        margin={{
-          right: "small"
-        }}
-      />
-      <Text color="#030f09" size="16px">
-        Your full name
+    <Heading
+      color="#030f09"
+      level="3"
+      margin={{ bottom: "xsmall", top: "none" }}
+    >
+      Миграция на AWS SES + настройка DNS/DMARC
+    </Heading>
+    <Box margin={{ left: "small" }}>
+      <Text color="status-unknown" size="15px">
+        Цена договорная • безналичный расчёт <br />
+        06 мая 2019, 21:47 • 3 отклика • 16 просмотров
+      </Text>
+
+      <Text
+        color="#030f09"
+        margin={{ top: "small", bottom: "small" }}
+        size="medium"
+      >
+        Необходимо настроить отправку транзакционных email-ов (триггеров) на
+        нашем сервере с использованием Amazon Simple Email Service. Бэкэнд у нас
+        на Руби, соответственно нужен человек со знанием языка не ниже мидла.
+        Дополнительно нужно будет внести изменения в записи ДНС/ДМАРК и
+        убедиться в доставляемости писем без ошибок. Ничего верстать не надо -
+        только настроить имэйл сервер на рассылку готовых писем.
       </Text>
     </Box>
-    <Anchor>
-      <Text color="#030f09" size="24px">
-        Make C# server
-      </Text>
-    </Anchor>
-    <Text>
-      I thought this salad was exceptionally delicious and healthy. I recommend
-      pressing the entire tofu block for at least 20 minutes before to remove
-      excess water in the ...
-    </Text>
+
+    <Box width="medium" margin="xsmall">
+      <Button primary label="Оставить заявку" color="neutral-1" />
+    </Box>
+
+    <HR />
+
+    <Responce />
+    <Responce />
+    <Responce />
   </Box>
 );
 
-const App = () => {
+const AdvertPage = () => {
   const theme = deepMerge(
     {
       global: {
@@ -181,12 +220,10 @@ const App = () => {
           gap="medium"
         >
           <Box gridArea="nav">
-            <User />
+            <Customer />
           </Box>
           <Box gridArea="main" round="8px">
-            <Advert />
-            <Advert />
-            <Advert />
+            <AdvertFullDescription />
           </Box>
         </Grid>
       </Box>
@@ -194,4 +231,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default AdvertPage;
