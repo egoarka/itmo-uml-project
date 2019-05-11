@@ -47,6 +47,14 @@ export const defaultState = {
         'I thought this salad was exceptionally delicious and healthy. I recommend\npressing the entire tofu block for at least 20 minutes before to remove\nexcess water in the ...',
       responses: ['response-1'],
     },
+    {
+      id: 'advert-2',
+      name: 'Make js server',
+      author: 'user-2',
+      description:
+        'I thought this salad was exceptionally delicious and healthy. I recommend\npressing the entire tofu block for at least 20 minutes before to remove\nexcess water in the ...',
+      responses: [],
+    },
   ],
   userSession: {
     user: {},
