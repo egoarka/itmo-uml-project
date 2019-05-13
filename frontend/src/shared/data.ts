@@ -1,9 +1,16 @@
+export enum AdvertStatus {
+  Done,
+  Working,
+  Waiting,
+}
+
 export interface Advert {
   id: string;
   name: string;
   author: string;
   description: string;
   responses: string[];
+  status: AdvertStatus;
 }
 
 export interface User {
@@ -37,6 +44,11 @@ export const defaultState = {
       author: 'user-2',
       body: 'I want this work to get done',
     },
+    {
+      id: 'response-2',
+      author: 'user-2',
+      body: 'I want this work to get done',
+    },
   ],
   adverts: [
     {
@@ -45,7 +57,8 @@ export const defaultState = {
       author: 'user-1',
       description:
         'I thought this salad was exceptionally delicious and healthy. I recommend\npressing the entire tofu block for at least 20 minutes before to remove\nexcess water in the ...',
-      responses: ['response-1'],
+      responses: ['response-1', 'response-2'],
+      status: AdvertStatus.Working,
     },
     {
       id: 'advert-2',
@@ -54,6 +67,7 @@ export const defaultState = {
       description:
         'I thought this salad was exceptionally delicious and healthy. I recommend\npressing the entire tofu block for at least 20 minutes before to remove\nexcess water in the ...',
       responses: [],
+      status: AdvertStatus.Waiting,
     },
   ],
   userSession: {

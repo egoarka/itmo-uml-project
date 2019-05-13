@@ -21,6 +21,7 @@ import { RouteComponentProps } from 'react-router';
 import { Sidebar } from '../components/Sidebar/Sidebar';
 import { UserInfo } from '../components/Sidebar/UserInfo';
 import { Advert, defaultState, Response } from '../shared/data';
+import { AdvertStatus } from '../components/AdvertStatus';
 
 const HR = () => <Box width="100%" height="1px" background="#e6e6e6" />;
 
@@ -48,6 +49,8 @@ const ResponseCard: React.FC<Response> = ({ body }) => (
       >
         06 мая 2019, 21:47
       </Text>
+
+      <Button label="Accept" margin={{ left: 'auto', right: 'small' }} />
     </Box>
 
     <Text color="#030f09" margin={{ left: '5px', top: 'small' }}>
@@ -107,6 +110,7 @@ const FullAdvert: React.FC<Advert> = ({
   description,
   responses,
   author,
+  status,
 }) => {
   // const actualAuthor = defaultState.users.find(u => u.id === author)
   const actualResponses = defaultState.responses.filter(r =>
@@ -124,13 +128,16 @@ const FullAdvert: React.FC<Advert> = ({
       }}
       round="16px"
     >
-      <Heading
-        color="#030f09"
-        level="3"
-        margin={{ bottom: 'xsmall', top: 'none' }}
-      >
-        {name}
-      </Heading>
+      <Box direction="row">
+        <Heading
+          color="#030f09"
+          level="3"
+          margin={{ bottom: 'xsmall', top: 'none' }}
+        >
+          {name}
+        </Heading>
+        <AdvertStatus status={status} />
+      </Box>
       <Box>
         <Text color="status-unknown" size="15px">
           Contractual price • cashless payment <br />

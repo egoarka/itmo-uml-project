@@ -2,8 +2,9 @@ import { Box, Text } from 'grommet';
 import React from 'react';
 import { Advert } from '../shared/data';
 import { RoutedButton } from './RoutedButton';
+import { AdvertStatus } from './AdvertStatus';
 
-const AdvertCard: React.FC<Advert> = ({ id, name, description }) => (
+const AdvertCard: React.FC<Advert> = ({ id, name, description, status }) => (
   <Box
     pad={'medium'}
     background="white"
@@ -12,7 +13,7 @@ const AdvertCard: React.FC<Advert> = ({ id, name, description }) => (
     }}
     round="16px"
   >
-    <Box direction="row">
+    <Box direction="row" pad="small">
       <Box
         round="full"
         height="32px"
@@ -26,11 +27,14 @@ const AdvertCard: React.FC<Advert> = ({ id, name, description }) => (
         Your full name
       </Text>
     </Box>
-    <RoutedButton path={`/advert/${id}`}>
-      <Text color="#030f09" size="24px">
-        {name}
-      </Text>
-    </RoutedButton>
+    <Box direction="row">
+      <RoutedButton path={`/advert/${id}`}>
+        <Text color="#030f09" size="24px">
+          {name}
+        </Text>
+      </RoutedButton>
+      <AdvertStatus status={status} />
+    </Box>
     <Text>{description}</Text>
   </Box>
 );
