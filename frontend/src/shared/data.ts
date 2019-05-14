@@ -1,8 +1,6 @@
-export enum AdvertStatus {
-  Done,
-  Working,
-  Waiting,
-}
+import nanoid from 'nanoid';
+
+export type TAdvertStatus = 'done' | 'working' | 'waiting';
 
 export interface Advert {
   id: string;
@@ -10,7 +8,7 @@ export interface Advert {
   author: string;
   description: string;
   responses: string[];
-  status: AdvertStatus;
+  status: TAdvertStatus;
 }
 
 export interface User {
@@ -25,49 +23,58 @@ export interface Response {
   body: string;
 }
 
+const user1Id = nanoid();
+const user2Id = nanoid();
+
+const advert1Id = nanoid();
+const advert2Id = nanoid();
+
+const response1Id = nanoid();
+const response2Id = nanoid();
+
 export const defaultState = {
   users: [
     {
-      id: 'user-1',
+      id: user1Id,
       name: 'Oleg Vladimirovich',
       role: 'customer',
     },
     {
-      id: 'user-2',
+      id: user2Id,
       name: 'Andrey Petrov',
       role: 'freelancer',
     },
   ],
   responses: [
     {
-      id: 'response-1',
-      author: 'user-2',
+      id: response1Id,
+      author: user2Id,
       body: 'I want this work to get done',
     },
     {
-      id: 'response-2',
-      author: 'user-2',
+      id: response2Id,
+      author: user2Id,
       body: 'I want this work to get done',
     },
   ],
   adverts: [
     {
-      id: 'advert-1',
+      id: advert1Id,
       name: 'Make C# server',
-      author: 'user-1',
+      author: user1Id,
       description:
         'I thought this salad was exceptionally delicious and healthy. I recommend\npressing the entire tofu block for at least 20 minutes before to remove\nexcess water in the ...',
-      responses: ['response-1', 'response-2'],
-      status: AdvertStatus.Working,
+      responses: [response1Id, response2Id],
+      status: 'done',
     },
     {
-      id: 'advert-2',
+      id: advert2Id,
       name: 'Make js server',
-      author: 'user-2',
+      author: user1Id,
       description:
         'I thought this salad was exceptionally delicious and healthy. I recommend\npressing the entire tofu block for at least 20 minutes before to remove\nexcess water in the ...',
       responses: [],
-      status: AdvertStatus.Waiting,
+      status: 'working',
     },
   ],
   userSession: {

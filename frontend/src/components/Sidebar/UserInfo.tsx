@@ -1,8 +1,9 @@
 import { Box, Text } from 'grommet';
 import React from 'react';
+import { User } from '../../shared/data';
 import { HR } from '../HR';
 
-const UserInfo = () => (
+const UserInfo = (user: User) => (
   <Box>
     <Box
       direction="row"
@@ -15,9 +16,9 @@ const UserInfo = () => (
       <Box round="full" height="45px" width="45px" background="#e6e6e6" />
       <Box pad={{ left: '15px' }}>
         <Text weight="bold" color="#030f09">
-          Your full name
+          {user.name}
         </Text>
-        <Text>customer</Text>
+        <Text>{user.role}</Text>
       </Box>
     </Box>
     <HR />

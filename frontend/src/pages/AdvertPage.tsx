@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Grid,
+  Grommet,
   Heading,
   Layer,
   Text,
@@ -16,12 +17,15 @@ import {
   DocumentWord,
   Send,
 } from 'grommet-icons';
-import React, { Component } from 'react';
+import nanoid from 'nanoid';
+import React, { Component, useContext } from 'react';
 import { RouteComponentProps } from 'react-router';
-import { Sidebar } from '../components/Sidebar/Sidebar';
-import { UserInfo } from '../components/Sidebar/UserInfo';
-import { Advert, defaultState, Response } from '../shared/data';
+import { AdvertResponses } from '../components/AdvertResponses';
 import { AdvertStatus } from '../components/AdvertStatus';
+import { Sidebar } from '../components/Sidebar/Sidebar';
+import { Advert, defaultState, Response } from '../shared/data';
+import { ResponsesContext, UserSessionContext } from '../shared/state';
+import { blueButton } from '../shared/theme';
 
 const HR = () => <Box width="100%" height="1px" background="#e6e6e6" />;
 
@@ -59,23 +63,34 @@ const ResponseCard: React.FC<Response> = ({ body }) => (
   </Box>
 );
 
-class LeaveResponse extends Component {
+class LeaveResponse extends Component<
+  { addResponse; session },
+  { open; body }
+> {
   state = {
     open: false,
+    body: '',
   };
 
   onClose = () => this.setState({ open: false });
+  onChangeBody = e => this.setState({ body: e.target.value });
 
   render() {
-    const { open } = this.state;
+    const { open, body } = this.state;
+    const { addResponse, session } = this.props;
+
+    // export interface Response {
+    //   id: string;
+    //   author: string;
+    //   body: string;
+    // }
+
     return (
       <Box>
-        <Box
-          width="235px"
-          margin="10px 0px 20px 0px"
-          onClick={() => this.setState({ open: !open })}
-        >
-          <Button primary icon={<Add />} label="Leave response" />
+        <Box onClick={() => this.setState({ open: !open })}>
+          <Grommet theme={blueButton}>
+            <Button primary icon={<Add />} label="Leave response" />
+          </Grommet>
         </Box>
         {open && (
           <Layer
@@ -88,15 +103,32 @@ class LeaveResponse extends Component {
               <Heading level={4} margin="none" alignSelf="center">
                 Leave response
               </Heading>
-              <TextArea resize={false} placeholder="Some text..." />
+              <TextArea
+                resize={false}
+                placeholder="Some text..."
+                onChange={this.onChangeBody}
+              />
               <Box direction="row" gap="medium" margin={{ left: '10px' }}>
                 <DocumentImage />
                 <DocumentTxt />
                 <DocumentWord />
                 <DocumentPdf />
               </Box>
-
-              <Button icon={<Send />} primary label="Send" />
+              <Grommet theme={blueButton}>
+                <Button
+                  icon={<Send />}
+                  primary
+                  label="Send"
+                  fill={true}
+                  onClick={() => {
+                    addResponse({
+                      body,
+                      id: nanoid(),
+                      author: session.user!.id,
+                    });
+                  }}
+                />
+              </Grommet>
             </Box>
           </Layer>
         )}
@@ -113,7 +145,16 @@ const FullAdvert: React.FC<Advert> = ({
   status,
 }) => {
   // const actualAuthor = defaultState.users.find(u => u.id === author)
-  const actualResponses = defaultState.responses.filter(r =>
+
+  const responsesContext = useContext(ResponsesContext);
+  const session = useContext(UserSessionContext);
+  const { addResponse } = responsesContext;
+
+  console.log({
+    responses,
+    responsesContext,
+  });
+  const actualResponses = responsesContext.responses.filter(r =>
     responses.includes(r.id),
   );
 
@@ -136,7 +177,9 @@ const FullAdvert: React.FC<Advert> = ({
         >
           {name}
         </Heading>
-        <AdvertStatus status={status} />
+        <Box margin={{ left: 'auto' }}>
+          <AdvertStatus status={status} />
+        </Box>
       </Box>
       <Box>
         <Text color="status-unknown" size="15px">
@@ -153,9 +196,23 @@ const FullAdvert: React.FC<Advert> = ({
         </Text>
       </Box>
 
-      <LeaveResponse />
-
       <HR />
+      <Box
+        pad={{ top: 'small', bottom: 'small' }}
+        direction="row"
+        align="center"
+      >
+        <AdvertResponses count={responses.length} />
+        <Box
+          margin={{
+            left: 'auto',
+          }}
+        />
+        <LeaveResponse
+          addResponse={responsesContext.addResponse}
+          session={session}
+        />
+      </Box>
       {actualResponses.map(response => (
         <ResponseCard {...response} key={response.id} />
       ))}
@@ -188,9 +245,7 @@ const AdvertPage: React.FC<RouteComponentProps<{ id }>> = ({ match }) => {
       gap="medium"
     >
       <Box gridArea="nav">
-        <Sidebar>
-          <UserInfo />
-        </Sidebar>
+        <Sidebar>{/* <UserInfo /> */}</Sidebar>
       </Box>
       <Box gridArea="main" round="8px">
         <FullAdvert {...advert} />

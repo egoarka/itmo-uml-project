@@ -1,26 +1,30 @@
 import {
   Box,
-  Grid,
   Button,
-  Layer,
+  Grid,
+  Grommet,
   Heading,
+  Layer,
+  Select,
   TextArea,
   TextInput,
-  Select,
 } from 'grommet';
-import React, { Component } from 'react';
-import { AdvertCard } from '../components/AdvertCard';
-import { Sidebar } from '../components/Sidebar/Sidebar';
-import { UserInfo } from '../components/Sidebar/UserInfo';
-import { defaultState } from '../shared/data';
 import {
   Add,
   DocumentImage,
-  DocumentWord,
   DocumentPdf,
   DocumentTxt,
+  DocumentWord,
   Send,
 } from 'grommet-icons';
+import React, { Component, useContext } from 'react';
+import { AdvertCard } from '../components/AdvertCard';
+import { Sidebar } from '../components/Sidebar/Sidebar';
+import { UserInfo } from '../components/Sidebar/UserInfo';
+import { UserList } from '../components/Sidebar/UserList';
+import { defaultState } from '../shared/data';
+import { UserSessionContext } from '../shared/state';
+import { blueButton } from '../shared/theme';
 
 class SelectJobType extends Component {
   state = {
@@ -58,7 +62,9 @@ class LeaveAdvert extends Component {
           margin="10px 0px 20px 0px"
           onClick={() => this.setState({ open: !open })}
         >
-          <Button primary icon={<Add />} label="Leave advert" />
+          <Grommet theme={blueButton}>
+            <Button primary icon={<Add />} label="Leave advert" />
+          </Grommet>
         </Box>
         {open && (
           <Layer
@@ -88,8 +94,9 @@ class LeaveAdvert extends Component {
                 <DocumentWord />
                 <DocumentPdf />
               </Box>
-
-              <Button icon={<Send />} primary label="Send" />
+              <Grommet theme={blueButton}>
+                <Button icon={<Send />} primary label="Send" fill={true} />
+              </Grommet>
             </Box>
           </Layer>
         )}
@@ -100,6 +107,9 @@ class LeaveAdvert extends Component {
 
 const MainPage = () => {
   const adverts = defaultState.adverts;
+
+  const session = useContext(UserSessionContext);
+
   return (
     <Grid
       fill
@@ -113,8 +123,9 @@ const MainPage = () => {
     >
       <Box gridArea="nav">
         <Sidebar>
-          <UserInfo />
-          <LeaveAdvert />
+          {!session.user && <UserList />}
+          {session.user && <UserInfo {...session.user!} />}
+          {session.user && <LeaveAdvert />}
         </Sidebar>
       </Box>
       <Box gridArea="main" round="8px">
