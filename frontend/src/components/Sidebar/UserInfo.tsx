@@ -28,12 +28,12 @@ const UserInfo = (user: User) => (
       }}
       direction="row"
     >
-      <Box>
+      {/* <Box>
         <Text weight="bold" color="#030f09">
           20
         </Text>
         <Text>ads</Text>
-      </Box>
+      </Box> */}
     </Box>
   </Box>
 );

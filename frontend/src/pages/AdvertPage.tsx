@@ -21,9 +21,9 @@ import {
 import nanoid from 'nanoid';
 import React, { Component, useContext } from 'react';
 import { RouteComponentProps } from 'react-router';
-import { AdvertResponses } from '../components/AdvertResponses';
 import { AdvertStatus } from '../components/AdvertStatus';
-import { Sidebar } from '../components/Sidebar/Sidebar';
+import { Counter } from '../components/Counter';
+import { MiniUser } from '../components/MiniUser';
 import { Advert, Response } from '../shared/data';
 import {
   AdvertsContext,
@@ -156,7 +156,8 @@ const FullAdvert: React.FC<Advert> = ({
   status,
   createdAt,
 }) => {
-  // const actualAuthor = defaultState.users.find(u => u.id === author)
+  const { users } = useContext(UsersContext);
+  const actualAuthor = users.find(user => user.id === author)!;
 
   const responsesContext = useContext(ResponsesContext);
   const { addResponse } = useContext(AdvertsContext);
@@ -191,7 +192,8 @@ const FullAdvert: React.FC<Advert> = ({
       </Box>
       <Box>
         <Text color="status-unknown" size="15px">
-          Contractual price • cashless payment <br />
+          <MiniUser {...actualAuthor} />
+          {/* Contractual price • cashless payment <br /> */}
           {distanceInWords(createdAt, new Date(), {
             includeSeconds: true,
           })}
@@ -212,7 +214,7 @@ const FullAdvert: React.FC<Advert> = ({
         direction="row"
         align="center"
       >
-        <AdvertResponses count={responses.length} />
+        <Counter count={responses.length} label=" responses " />
         <Box
           margin={{
             left: 'auto',
@@ -256,9 +258,7 @@ const AdvertPage: React.FC<RouteComponentProps<{ id }>> = ({ match }) => {
       rows={['flex']}
       gap="medium"
     >
-      <Box gridArea="nav">
-        <Sidebar>{/* <UserInfo /> */}</Sidebar>
-      </Box>
+      <Box gridArea="nav">{/* <Sidebar></Sidebar> */}</Box>
       <Box gridArea="main" round="8px">
         <FullAdvert {...advert} />
       </Box>

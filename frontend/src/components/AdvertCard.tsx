@@ -2,8 +2,9 @@ import { Box, Text } from 'grommet';
 import React, { useContext } from 'react';
 import { Advert } from '../shared/data';
 import { UsersContext } from '../shared/state';
-import { AdvertResponses } from './AdvertResponses';
 import { AdvertStatus } from './AdvertStatus';
+import { Counter } from './Counter';
+import { MiniUser } from './MiniUser';
 import { RoutedButton } from './RoutedButton';
 
 export { AdvertStatus };
@@ -40,29 +41,10 @@ const AdvertCard: React.FC<Advert> = ({
             left: 'auto',
           }}
         />
-        <AdvertResponses count={responses.length} />
+        <Counter count={responses.length} label=" responses " />
         <AdvertStatus status={status} />
       </Box>
-      <Box
-        direction="row"
-        pad={{
-          bottom: 'small',
-        }}
-        align="center"
-      >
-        <Box
-          round="full"
-          height="24px"
-          width="24px"
-          background="#e6e6e6"
-          margin={{
-            right: 'small',
-          }}
-        />
-        <Text color="#030f09" size="16px">
-          {actualAuthor.name}
-        </Text>
-      </Box>
+      <MiniUser {...actualAuthor} />
       <Text>{description}</Text>
     </Box>
   );

@@ -82,6 +82,9 @@ class AppState$ extends React.Component<
     this.props.history.push('/login');
   };
   addAdvert = (advert: Advert) => {
+    this.setState({
+      adverts: [advert, ...this.state.adverts],
+    });
     /// todo
   };
 

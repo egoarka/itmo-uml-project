@@ -1,7 +1,7 @@
 import { Box, Text } from 'grommet';
 import React from 'react';
 
-const AdvertResponses = ({ count }) => (
+const Counter = ({ count, label }) => (
   <Box direction="row" align="center">
     <Box
       round="small"
@@ -14,8 +14,8 @@ const AdvertResponses = ({ count }) => (
         <Text weight="bold">{count}</Text>
       </Text>
     </Box>
-    <Text> responses </Text>
+    <Text>{label}</Text>
   </Box>
 );
 
-export { AdvertResponses };
+export { Counter };
