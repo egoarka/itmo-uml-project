@@ -1,6 +1,7 @@
 import { Box, Text } from 'grommet';
-import React from 'react';
-import { Advert, defaultState } from '../shared/data';
+import React, { useContext } from 'react';
+import { Advert } from '../shared/data';
+import { UsersContext } from '../shared/state';
 import { AdvertResponses } from './AdvertResponses';
 import { AdvertStatus } from './AdvertStatus';
 import { RoutedButton } from './RoutedButton';
@@ -16,7 +17,8 @@ const AdvertCard: React.FC<Advert> = ({
   author,
   responses,
 }) => {
-  const actualAuthor = defaultState.users.find(u => u.id === author)!;
+  const { users } = useContext(UsersContext);
+  const actualAuthor = users.find(user => user.id === author)!;
 
   return (
     <Box

@@ -17,13 +17,15 @@ import {
   DocumentWord,
   Send,
 } from 'grommet-icons';
-import React, { Component, useContext } from 'react';
+import React, { Component, useContext, useState } from 'react';
+import { Route, RouteComponentProps } from 'react-router';
 import { AdvertCard } from '../components/AdvertCard';
+import { RoutedButton } from '../components/RoutedButton';
+import { Register } from '../components/Sidebar/Register';
 import { Sidebar } from '../components/Sidebar/Sidebar';
 import { UserInfo } from '../components/Sidebar/UserInfo';
 import { UserList } from '../components/Sidebar/UserList';
-import { defaultState } from '../shared/data';
-import { UserSessionContext } from '../shared/state';
+import { AdvertsContext, UserSessionContext } from '../shared/state';
 import { blueButton } from '../shared/theme';
 
 class SelectJobType extends Component {
@@ -45,71 +47,76 @@ class SelectJobType extends Component {
   }
 }
 
-class LeaveAdvert extends Component {
-  state = {
-    open: false,
-  };
+const LeaveAdvert = ({ logOut }) => {
+  const [open, setOpen] = useState(false);
+  const onClose = () => setOpen(false);
 
-  onClose = () => this.setState({ open: false });
-
-  render() {
-    const { open } = this.state;
-
-    return (
+  return (
+    <Box>
       <Box>
-        <Box
-          width="235px"
-          margin="10px 0px 20px 0px"
-          onClick={() => this.setState({ open: !open })}
-        >
-          <Grommet theme={blueButton}>
-            <Button primary icon={<Add />} label="Leave advert" />
-          </Grommet>
-        </Box>
-        {open && (
-          <Layer
-            modal
-            position="center"
-            onClickOutside={this.onClose}
-            onEsc={this.onClose}
-          >
-            <Box pad="medium" gap="small" width="large">
-              <Heading level={4} margin="none" alignSelf="center">
-                Leave advert
-              </Heading>
-              <TextInput placeholder="Title" />
-
-              <SelectJobType />
-
-              <Box height="medium">
-                <TextArea
-                  resize={false}
-                  placeholder="Technical specification"
-                  fill
-                />
-              </Box>
-              <Box direction="row" gap="medium" margin={{ left: '10px' }}>
-                <DocumentImage />
-                <DocumentTxt />
-                <DocumentWord />
-                <DocumentPdf />
-              </Box>
-              <Grommet theme={blueButton}>
-                <Button icon={<Send />} primary label="Send" fill={true} />
-              </Grommet>
-            </Box>
-          </Layer>
-        )}
+        <Grommet theme={blueButton}>
+          <Box height={'15px'} />
+          <Button
+            primary
+            icon={<Add />}
+            label="Add advert"
+            fill={true}
+            onClick={() => setOpen(!open)}
+          />
+          <Box height={'15px'} />
+          <Button primary label="Logout" fill={true} onClick={logOut} />
+        </Grommet>
       </Box>
-    );
-  }
-}
+      {open && (
+        <Layer modal position="center" onClickOutside={onClose} onEsc={onClose}>
+          <Box pad="medium" gap="small" width="large">
+            <Heading level={4} margin="none" alignSelf="center">
+              Add advert
+            </Heading>
+            <TextInput placeholder="Title" />
 
-const MainPage = () => {
-  const adverts = defaultState.adverts;
+            <SelectJobType />
+
+            <Box height="medium">
+              <TextArea
+                resize={false}
+                placeholder="Technical specification"
+                fill
+              />
+            </Box>
+            <Box direction="row" gap="medium" margin={{ left: '10px' }}>
+              <DocumentImage />
+              <DocumentTxt />
+              <DocumentWord />
+              <DocumentPdf />
+            </Box>
+            <Grommet theme={blueButton}>
+              <Button icon={<Send />} primary label="Send" fill={true} />
+            </Grommet>
+          </Box>
+        </Layer>
+      )}
+    </Box>
+  );
+};
+
+const AuthMethod = () => (
+  <Grommet theme={blueButton}>
+    <Box direction="row" align="center" justify="around">
+      <RoutedButton path="/login">
+        <Button label="LogIn" />
+      </RoutedButton>
+      <RoutedButton path="/register">
+        <Button label="Register" />
+      </RoutedButton>
+    </Box>
+  </Grommet>
+);
+
+const MainPage: React.FC<RouteComponentProps> = ({ match }) => {
+  const { adverts } = useContext(AdvertsContext);
 
   const session = useContext(UserSessionContext);
-
   return (
     <Grid
       fill
@@ -123,9 +130,24 @@ const MainPage = () => {
     >
       <Box gridArea="nav">
         <Sidebar>
-          {!session.user && <UserList />}
+          {match.path === '/' && !session.user && <AuthMethod />}
+          <Route
+            exact
+            path={`/login`}
+            render={() => {
+              return !session.user && <UserList />;
+            }}
+          />
+          <Route
+            exact
+            path={`/register`}
+            render={() => {
+              return !session.user && <Register />;
+            }}
+          />
+
           {session.user && <UserInfo {...session.user!} />}
-          {session.user && <LeaveAdvert />}
+          {session.user && <LeaveAdvert logOut={session.logOut} />}
         </Sidebar>
       </Box>
       <Box gridArea="main" round="8px">

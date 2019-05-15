@@ -9,8 +9,8 @@ import { theme } from './shared/theme';
 
 const AppRouter = () => {
   return (
-    <AppState>
-      <Router>
+    <Router>
+      <AppState>
         <Grommet
           theme={theme}
           style={{ flex: '0 0 auto', background: '#f7f8fa' }}
@@ -19,14 +19,16 @@ const AppRouter = () => {
           <Box align={'center'}>
             <Box width="1024px" margin="50px 80px">
               <div>
-                <Route path="/" exact component={MainPage} />
+                <Route exact path="/" component={MainPage} />
+                <Route exact path="/login" component={MainPage} />
+                <Route exact path="/register" component={MainPage} />
                 <Route path="/advert/:id" component={AdvertPage} />
               </div>
             </Box>
           </Box>
         </Grommet>
-      </Router>
-    </AppState>
+      </AppState>
+    </Router>
   );
 };
 

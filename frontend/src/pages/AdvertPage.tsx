@@ -1,3 +1,4 @@
+import { distanceInWords } from 'date-fns';
 import {
   Anchor,
   Box,
@@ -23,48 +24,62 @@ import { RouteComponentProps } from 'react-router';
 import { AdvertResponses } from '../components/AdvertResponses';
 import { AdvertStatus } from '../components/AdvertStatus';
 import { Sidebar } from '../components/Sidebar/Sidebar';
-import { Advert, defaultState, Response } from '../shared/data';
-import { ResponsesContext, UserSessionContext } from '../shared/state';
+import { Advert, Response } from '../shared/data';
+import {
+  AdvertsContext,
+  ResponsesContext,
+  UsersContext,
+  UserSessionContext,
+} from '../shared/state';
 import { blueButton } from '../shared/theme';
 
 const HR = () => <Box width="100%" height="1px" background="#e6e6e6" />;
 
-const ResponseCard: React.FC<Response> = ({ body }) => (
-  <Box pad={{ top: 'small', bottom: 'small' }}>
-    <Box direction="row" align="center">
-      <Box round="full" height="35px" width="35px" background="#e6e6e6" />
-      <Anchor>
+const ResponseCard: React.FC<Response> = ({ body, author, createdAt }) => {
+  const { users } = useContext(UsersContext);
+  const actualAuthor = users.find(user => user.id === author)!;
+
+  return (
+    <Box pad={{ top: 'small', bottom: 'small' }}>
+      <Box direction="row" align="center">
+        <Box round="full" height="35px" width="35px" background="#e6e6e6" />
+        <Anchor>
+          <Text
+            weight="bold"
+            color="#030f09"
+            alignSelf="center"
+            margin={{ left: 'xsmall' }}
+          >
+            {actualAuthor.name}
+          </Text>
+        </Anchor>
+
         <Text
-          weight="bold"
-          color="#030f09"
-          alignSelf="center"
-          margin={{ left: 'xsmall' }}
+          color="status-unknown"
+          size="15px"
+          margin={{
+            left: 'small',
+          }}
         >
-          User name
+          {distanceInWords(createdAt, new Date(), {
+            includeSeconds: true,
+          })}
         </Text>
-      </Anchor>
+        <Box margin={{ left: 'auto' }} />
+        <Grommet theme={blueButton}>
+          <Button label="Accept" margin={{ right: 'small' }} />
+        </Grommet>
+      </Box>
 
-      <Text
-        color="status-unknown"
-        size="15px"
-        margin={{
-          left: 'small',
-        }}
-      >
-        06 мая 2019, 21:47
+      <Text color="#030f09" margin={{ left: '5px', top: 'small' }}>
+        {body}
       </Text>
-
-      <Button label="Accept" margin={{ left: 'auto', right: 'small' }} />
     </Box>
-
-    <Text color="#030f09" margin={{ left: '5px', top: 'small' }}>
-      {body}
-    </Text>
-  </Box>
-);
+  );
+};
 
 class LeaveResponse extends Component<
-  { addResponse; session },
+  { addResponse: (response: Response) => void; session },
   { open; body }
 > {
   state = {
@@ -78,12 +93,6 @@ class LeaveResponse extends Component<
   render() {
     const { open, body } = this.state;
     const { addResponse, session } = this.props;
-
-    // export interface Response {
-    //   id: string;
-    //   author: string;
-    //   body: string;
-    // }
 
     return (
       <Box>
@@ -125,6 +134,7 @@ class LeaveResponse extends Component<
                       body,
                       id: nanoid(),
                       author: session.user!.id,
+                      createdAt: new Date(),
                     });
                   }}
                 />
@@ -138,22 +148,20 @@ class LeaveResponse extends Component<
 }
 
 const FullAdvert: React.FC<Advert> = ({
+  id,
   name,
   description,
   responses,
   author,
   status,
+  createdAt,
 }) => {
   // const actualAuthor = defaultState.users.find(u => u.id === author)
 
   const responsesContext = useContext(ResponsesContext);
+  const { addResponse } = useContext(AdvertsContext);
   const session = useContext(UserSessionContext);
-  const { addResponse } = responsesContext;
 
-  console.log({
-    responses,
-    responsesContext,
-  });
   const actualResponses = responsesContext.responses.filter(r =>
     responses.includes(r.id),
   );
@@ -184,7 +192,9 @@ const FullAdvert: React.FC<Advert> = ({
       <Box>
         <Text color="status-unknown" size="15px">
           Contractual price • cashless payment <br />
-          05/10/2019 21:47 • 3 responses
+          {distanceInWords(createdAt, new Date(), {
+            includeSeconds: true,
+          })}
         </Text>
 
         <Text
@@ -209,7 +219,7 @@ const FullAdvert: React.FC<Advert> = ({
           }}
         />
         <LeaveResponse
-          addResponse={responsesContext.addResponse}
+          addResponse={response => addResponse(id, response)}
           session={session}
         />
       </Box>
@@ -219,12 +229,14 @@ const FullAdvert: React.FC<Advert> = ({
     </Box>
   );
 };
+
 const AdvertPage: React.FC<RouteComponentProps<{ id }>> = ({ match }) => {
   const {
     params: { id },
   } = match;
 
-  const advert = defaultState.adverts.find(a => a.id === id);
+  const { adverts } = useContext(AdvertsContext);
+  const advert = adverts.find(a => a.id === id);
 
   if (!advert) {
     return (

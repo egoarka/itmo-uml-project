@@ -2,8 +2,8 @@ import { Box, Button, Grommet, Text } from 'grommet';
 import { Login } from 'grommet-icons';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { defaultState, User } from '../../shared/data';
-import { UserSessionContext } from '../../shared/state';
+import { User } from '../../shared/data';
+import { UsersContext, UserSessionContext } from '../../shared/state';
 import { blueButtonIcon } from '../../shared/theme';
 
 const Div = styled(Box)`
@@ -49,10 +49,11 @@ const UserCard = ({
 
 const UserList = () => {
   const session = useContext(UserSessionContext);
+  const { users } = useContext(UsersContext);
 
   return (
     <Box>
-      {defaultState.users.map(user => (
+      {users.map(user => (
         <UserCard key={user.id} user={user} logIn={session.logIn} />
       ))}
     </Box>
