@@ -19,16 +19,16 @@ Worth to mention that our platform is made with new technologies, so it's unlike
 
 Functionality (by roles):
 
-Guest:
+**Guest:**
 
 1.	Can logIn
 2.	Can register (and set desired role during registration: become freelancer or customer)
 
-Common user:
+**Common user:**
 
 1.	Filter adverts by name, customer and category
 
-Customer:
+**Customer:**
 
 1.	Create advert
 2.	Handle adverts
@@ -36,7 +36,7 @@ Customer:
 4.	Agree on done for advert
 
 
-Freelancer:
+**Freelancer:**
 
 1.	Apply on advert
 2.	Work on advert
