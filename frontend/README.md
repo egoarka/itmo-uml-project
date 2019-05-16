@@ -1,44 +1,47 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Freelance platform
 
-## Available Scripts
+Link: https://freelance-uml-gpuroj8dq.now.sh
 
-In the project directory, you can run:
+https://freelance-uml-gpuroj8dq.now.sh
 
-### `npm start`
+---
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Freelancer platform is designed for self employed people (especially freelancer and customer). These people can make contacts with each other and work on some project or task together (in our system it's called advert) by agreement and keep in touch.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Also Freelancer platform allows to navigate on website without any delays and problems.
 
-### `npm test`
+Our team is proud that we made simple and in the same time efficient filter by adverts, so anybody can find anything that is suit for him.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Customer is able to create advert and apply some freelancer on it from his response on advert.
 
-### `npm run build`
+And on the other hand freelancer is allowed to leave response on advert and if he's applied, he's able to work on that advert.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Worth to mention that our platform is made with new technologies, so it's unlikely you to have bad experience with it.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Functionality (by roles):
 
-### `npm run eject`
+Guest:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1.	Can logIn
+2.	Can register (and set desired role during registration: become freelancer or customer)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Common user:
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+1.	Filter adverts by name, customer and category
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Customer:
 
-## Learn More
+1.	Create advert
+2.	Handle adverts
+3.	Apply freelancer on advert
+4.	Agree on done for advert
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Freelancer:
+
+1.	Apply on advert
+2.	Work on advert
+3.	Send report
+
+
